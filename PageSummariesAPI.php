@@ -55,8 +55,6 @@ class PageSummariesAPI extends ApiBase {
 					'link' => 'http://'.$_SERVER['SERVER_NAME'].'/reference/'.$page
 				);
 				
-				//print_r($data);
-				
 				array_push($summaries, $tmp);
 			}
 		}
@@ -112,30 +110,21 @@ function addSummaryInfo( &$module ) {
 	
 	$body = $data['parse']['text']['*'];
 	$matches = Array();
-	//$body = preg_replace('/\r|\n/', ' ', $body);
 	$c = preg_match_all('/<p>(.+?)<\/p>/is', $body, $matches);
-	//$c = preg_match('/<p[^>]*>(.+?)<\/p>/is', $body, $matches);
 	$description;
 	wfDebugLog('addsummaryInfo', 'Number of matches: '.$c);
 	for ($i = 0; $i < count($matches[0]); $i++) {
 		$description = trim(preg_replace('/\"/', '\'', strip_tags($matches[0][$i])));
-		wfDebugLog('addsummaryInfo', 'Summary Description: '.$description);
 		if (strlen($description)) break;
 	}
 	
 	if (strlen($description)) {
-		wfDebugLog('addsummaryInfo', "SummaryAPIExtension Description: $description");
 		$status = $result->addValue(
 					array('parse', 'text'),
 					'summary',
 					$description
 		);
-	}
-	
-	//print_r($data);
-	
-	//if (!$status) die ("couldn't add data");
-	
+	}	
 	
 	return true;
 }
