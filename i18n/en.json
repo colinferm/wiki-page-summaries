@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Colin Andrew Ferm"
+		]
+	},
+	"pagesummaries": "Page Summaries",
+	"pagesummaries-desc": "Addes the function \"summaries\" to the API with the paramter \"pages\" to take multiple page names separated by a \"|\" and return their summaries.",
+	"pagesummaries-summary": "Generates story ideas with relevant links to wiki content."
+}

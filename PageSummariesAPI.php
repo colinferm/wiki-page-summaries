@@ -4,7 +4,7 @@ $wgExtensionCredits['other'][] = array(
 	'name' => 'API Parser Summary',
 	'author' =>'Colin Andrew Ferm',  
 	'description' => 'Extends the "parse" function of the API to include a "summary" field which is taken from the first paragraph of text on the page.',
-	'version' => '1.0',
+	'version' => '1.1',
 	'path' => __FILE__
 );
 
@@ -12,12 +12,9 @@ $wgExtensionCredits['other'][] = array(
 	'name' => 'API Pages Summaries',
 	'author' =>'Colin Andrew Ferm',  
 	'description' => 'Addes the function "summaries" to the API with the paramter "pages" to take multiple page names separated by a "|" and return their summaries.',
-	'version' => '1.0',
+	'version' => '1.1',
 	'path' => __FILE__
 );
-
-$wgHooks['APIAfterExecute'][] = 'addSummaryInfo';
-$wgAPIModules['summaries'] = "PageSummariesAPI";
 
 class PageSummariesAPI extends ApiBase {
 
@@ -26,6 +23,8 @@ class PageSummariesAPI extends ApiBase {
 	}
 	
 	public function execute() {
+		global $wgScriptPath, $wgArticlePath;
+
 		$params = $this->extractRequestParams();
 		$pages = $params['pages'];
 		
@@ -41,19 +40,21 @@ class PageSummariesAPI extends ApiBase {
 				$page = $pagesList[$i];
 				
 				$req = new FauxRequest( array(
-						'action' => 'parse',
-						'page' => $page
-						));
+					'action' => 'parse',
+					'page' => $page
+				));
 						
 				$main = new ApiMain($req);
 				$main->execute();
-				$data = $main->getResultData();
+				$data = $main->getResult()->getResultData();
 				
 				$tmp = array(
 					'title' => $data['parse']['displaytitle'],
-					'summary' => $data['parse']['text']['summary'],
-					'link' => 'http://'.$_SERVER['SERVER_NAME'].'/reference/'.$page
+					'summary' => $data['parse']['summary'],
+					'link' => 'http://'.$_SERVER['SERVER_NAME'].str_replace('$1', $page, $wgArticlePath)
 				);
+				
+				//print_r($data);
 				
 				array_push($summaries, $tmp);
 			}
@@ -61,8 +62,8 @@ class PageSummariesAPI extends ApiBase {
 		
 		$result = $this->getResult();
 		$tags = array('summaries');
-
-                $result->setIndexedTagName_internal( $tags, 'article' );
+		//$result->setIndexedTagName_internal($tags, 'article');
+		$result->setIndexedTagName($tags, 'article');
 		$result->addValue(null, $this->getModuleName(), $summaries);
 	}
 	
@@ -89,42 +90,14 @@ class PageSummariesAPI extends ApiBase {
 	
 	protected function getExamples() {
 		return array (
-			'api.php?action=summaries&pages=Main_Page|Category:Example'
+			'api.php?action=pagesummaries&pages=Main_Page|Category:Example'
 		);
 	}
 	
 	public function getVersion() {
-		return __CLASS__ . ': Version 1.0';
+		return __CLASS__ . ': Version 1.1';
 	}
 }
 
-function addSummaryInfo( &$module ) {
-	//wfDebugLog('addsummaryInfo', 'SummaryAPIExtension Api Extension loaded...');
-	if(!($module instanceof ApiParse)) return true;
 
-	$result = $module->getResult();
-	$data = $result->getData();
-	
-	if (!isset($data['parse']['text']['*'])) return true;
-	
-	$body = $data['parse']['text']['*'];
-	$matches = Array();
-	$c = preg_match_all('/<p>(.+?)<\/p>/is', $body, $matches);
-	$description;
-	//wfDebugLog('addsummaryInfo', 'Number of matches: '.$c);
-	for ($i = 0; $i < count($matches[0]); $i++) {
-		$description = trim(preg_replace('/\"/', '\'', strip_tags($matches[0][$i])));
-		if (strlen($description)) break;
-	}
-	
-	if (strlen($description)) {
-		$status = $result->addValue(
-					array('parse', 'text'),
-					'summary',
-					$description
-		);
-	}	
-	
-	return true;
-}
 ?>

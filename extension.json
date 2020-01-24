@@ -1,0 +1,36 @@
+{
+	"name": "PageSummaries",
+	"version": "1.1",
+	"author": [
+		"Colin Andrew Ferm"
+	],
+	"url": "https://www.unifiedrepublicofstars.com",
+	"descriptionmsg": "pagesummaries-desc",
+	"license-name": "GPL-2.0-or-later",
+	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.32.0"
+	},
+	"MessagesDirs": {
+		"PageSummaries": [
+			"i18n"
+		]
+	},
+	"Hooks": {
+		"APIAfterExecute": [
+			"PageSummaryInfo::addSummaryInfo"
+		]
+	},
+	"APIModules": {
+		"summaries": "PageSummariesAPI"
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "PageSummariesAPI"
+	},
+	"AutoloadClasses": {
+		"PageSummariesAPI": "PageSummariesAPI.php",
+		"PageSummaryInfo": "PageSummaryInfo.php"
+	},
+	"manifest_version": 1
+}
