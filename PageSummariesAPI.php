@@ -90,7 +90,7 @@ class PageSummariesAPI extends ApiBase {
 	
 	protected function getExamples() {
 		return array (
-			'api.php?action=pagesummaries&pages=Main_Page|Category:Example'
+			'api.php?action=summaries&pages=Main_Page|Category:Example'
 		);
 	}
 	
