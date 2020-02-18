@@ -9,7 +9,7 @@
 	"license-name": "BSD-3-Clause",
 	"type": "other",
 	"requires": {
-		"MediaWiki": ">= 1.32.0"
+		"MediaWiki": ">= 1.31.0"
 	},
 	"MessagesDirs": {
 		"PageSummaries": [
