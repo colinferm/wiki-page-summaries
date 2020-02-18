@@ -11,7 +11,7 @@ $wgExtensionCredits['other'][] = array(
 $wgExtensionCredits['other'][] = array(
 	'name' => 'API Pages Summaries',
 	'author' =>'Colin Andrew Ferm',  
-	'description' => 'Addes the function "summaries" to the API with the paramter "pages" to take multiple page names separated by a "|" and return their summaries.',
+	'description' => 'Adds the function "summaries" to the API with the paramter "pages" to take multiple page names separated by a "|" and return their summaries.',
 	'version' => '1.1',
 	'path' => __FILE__
 );

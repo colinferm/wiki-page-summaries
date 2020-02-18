@@ -1,7 +1,7 @@
 <?php
 class PageSummaryInfo {
 	public static function addSummaryInfo( &$module ) {
-		wfDebugLog('addsummaryInfo', 'SummaryAPIExtension Api Extension loaded...');
+		MWDebug::log('SummaryAPIExtension Api Extension loaded...');
 		if(!($module instanceof ApiParse)) return true;
 	
 		$result = $module->getResult();
@@ -15,10 +15,13 @@ class PageSummaryInfo {
 		$body = $data['parse']['text'];
 		$matches = Array();
 		//$body = preg_replace('/\r|\n/', ' ', $body);
-		$c = preg_match_all('/<p>(.+?)<\/p>/is', $body, $matches);
+		$c = preg_match_all('/<summary>(.+?)<\/summary>/is', $body, $matches);
+		if ($c == 0) {
+			$c = preg_match_all('/<p>(.+?)<\/p>/is', $body, $matches);
+		}
 		//$c = preg_match('/<p[^>]*>(.+?)<\/p>/is', $body, $matches);
 		$description;
-		wfDebugLog('addsummaryInfo', 'Number of matches: '.$c);
+		MWDebug::log('Number of matches: '.$c);
 		for ($i = 0; $i < count($matches[0]); $i++) {
 			$description = trim(preg_replace('/\"/', '\'', strip_tags($matches[0][$i])));
 			wfDebugLog('addsummaryInfo', 'Summary Description: '.$description);
@@ -26,11 +29,11 @@ class PageSummaryInfo {
 		}
 		
 		if (strlen($description)) {
-			wfDebugLog('addsummaryInfo', "SummaryAPIExtension Description: $description");
+			MWDebug::log("SummaryAPIExtension Description: $description");
 			$status = $result->addValue(
-						array('parse'),
-						'summary',
-						$description
+				array('parse'),
+				'summary',
+				$description
 			);
 		}	
 		return true;

@@ -1,10 +1,10 @@
 {
 	"name": "PageSummaries",
-	"version": "1.1",
+	"version": "1.2",
 	"author": [
 		"Colin Andrew Ferm"
 	],
-	"url": "https://www.unifiedrepublicofstars.com",
+	"url": "https://github.com/colinferm/wiki-page-summaries",
 	"descriptionmsg": "pagesummaries-desc",
 	"license-name": "GPL-2.0-or-later",
 	"type": "other",
@@ -17,6 +17,9 @@
 		]
 	},
 	"Hooks": {
+		"ParserFirstCallInit": [
+			"PageSummaryHooks::onParserSetup"
+		],
 		"APIAfterExecute": [
 			"PageSummaryInfo::addSummaryInfo"
 		]
@@ -30,7 +33,8 @@
 	},
 	"AutoloadClasses": {
 		"PageSummariesAPI": "PageSummariesAPI.php",
-		"PageSummaryInfo": "PageSummaryInfo.php"
+		"PageSummaryInfo": "PageSummaryInfo.php",
+		"PageSummaryHooks": "PageSummaryHooks.php"
 	},
 	"manifest_version": 1
 }
