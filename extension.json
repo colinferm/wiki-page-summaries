@@ -6,7 +6,7 @@
 	],
 	"url": "https://github.com/colinferm/wiki-page-summaries",
 	"descriptionmsg": "pagesummaries-desc",
-	"license-name": "GPL-2.0-or-later",
+	"license-name": "BSD-3-Clause",
 	"type": "other",
 	"requires": {
 		"MediaWiki": ">= 1.32.0"
